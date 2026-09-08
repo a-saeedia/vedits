@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.playwright-mcp/
+out/
+outputs/
+watch/
+media/
+*.mp4
+*.log
+bot.pid
+.env

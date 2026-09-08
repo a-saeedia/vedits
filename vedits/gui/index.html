@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>vedits — social video editor</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">vedits<span class="badge">FFmpeg · zero-budget</span></div>
+  <div class="top-actions">
+    <label class="preset-label">Canvas
+      <select id="presetSel" title="Output format"></select>
+    </label>
+    <button id="addMediaBtn" class="btn">＋ Add media</button>
+    <input type="file" id="mediaFile" accept="video/*" multiple hidden />
+    <button id="previewBtn" class="btn">Preview</button>
+    <button id="exportBtn" class="btn primary">Export</button>
+  </div>
+</header>
+
+<main class="workspace">
+  <!-- Media bin -->
+  <aside class="panel media-panel">
+    <h3>Media</h3>
+    <p class="hint">Add clips, then drag or click to add to timeline.</p>
+    <div id="mediaList" class="media-list"></div>
+  </aside>
+
+  <!-- Preview -->
+  <section class="panel preview-panel">
+    <div class="stage" id="previewStage">
+      <video id="previewVideo" controls></video>
+      <div class="preview-empty" id="previewEmpty">No timeline yet — add media & build below</div>
+    </div>
+    <div class="preview-meta" id="previewMeta"></div>
+  </section>
+
+  <!-- Timeline -->
+  <aside class="panel timeline-panel">
+    <div class="timeline-toolbar">
+      <h3>Timeline</h3>
+      <div class="timeline-actions">
+        <button id="clearTimeline" class="btn small">Clear</button>
+        <button id="zoomIn" class="btn small">+</button>
+        <button id="zoomOut" class="btn small">−</button>
+      </div>
+    </div>
+    <div id="trackHeader" class="track-header"></div>
+    <div id="trackVideo" class="track"></div>
+    <div id="trackText" class="track text-track"></div>
+    <div class="timeline-hint">Drag clips to reorder · drag edges to trim · ★ = transition to next</div>
+  </aside>
+
+  <!-- Inspector -->
+  <aside class="panel inspector">
+    <h3>Clip</h3>
+    <div id="inspectorBody" class="inspector-body"><em>Select a clip on the timeline</em></div>
+  </aside>
+</main>
+
+<!-- Agent + pipeline -->
+<section class="panel agent-panel">
+  <div class="agent-cols">
+    <div class="agent-chat">
+      <h3>🤖 Agent <span id="agentStatus" class="badge">…</span></h3>
+      <div id="agentLog" class="agent-log"><em>Ask in plain english — the agent plans and runs the FFmpeg pipeline itself.</em></div>
+      <div class="agent-input">
+        <input id="agentInput" placeholder="e.g. make 3 reels from assets/sample.mp4 with captions"
+               autocomplete="off" spellcheck="false" />
+        <button id="agentSend" class="btn primary">Send</button>
+      </div>
+    </div>
+    <div class="agent-tools">
+      <h3>⚙ Pipeline · smart cut</h3>
+      <div class="pipe-row"><label>Source</label><input id="pipeSrc" placeholder="path, or blank = first media item" /></div>
+      <div class="pipe-row"><label>Preset</label><select id="pipePreset"></select></div>
+      <div class="pipe-row"><label>Min (s)</label><input id="pipeMin" type="number" value="3" min="1" /></div>
+      <div class="pipe-row"><label>Max (s)</label><input id="pipeMax" type="number" value="45" min="2" /></div>
+      <div class="pipe-row"><label class="inline"><input id="pipeCaps" type="checkbox" checked /> burn captions</label></div>
+      <button id="pipeRun" class="btn primary">Run smart cut</button>
+      <div id="pipeStatus" class="pipe-status"></div>
+    </div>
+    <div class="agent-watch">
+      <h3>🕵 Watch folder · auto shorts</h3>
+      <div class="pipe-row"><label>Folder</label><input id="watchFolder" value="watch" /></div>
+      <div class="pipe-row"><label>Preset</label><select id="watchPreset"></select></div>
+      <button id="watchToggle" class="btn">Enable</button>
+      <div id="watchStatus" class="pipe-status"></div>
+    </div>
+  </div>
+</section>
+
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
